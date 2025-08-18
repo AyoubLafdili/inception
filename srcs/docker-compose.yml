@@ -1,0 +1,21 @@
+name: incpetion
+
+services:
+  nginx:
+    build: nginx
+    configs:
+    secrets:
+    volumes:
+    networks:
+  wordpress:
+    build: wordpress
+    configs:
+    secrets:
+    volumes:
+    networks:
+  mariadb:
+    build: mariadb
+    configs:
+    secrets:
+    volumes:
+    networks:

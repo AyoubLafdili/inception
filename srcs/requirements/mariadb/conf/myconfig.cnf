@@ -1,0 +1,7 @@
+[client-server]
+port            = 3306
+
+[server]
+pid-file        = /run/mariadbd.pid
+bind-address    = 0.0.0.0
+datadir        = /mnt/db/
