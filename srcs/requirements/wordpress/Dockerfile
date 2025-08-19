@@ -1,6 +1,4 @@
-FROM debian:12
-
-ARG php_version=8.2
+FROM debian:bookworm
 
 RUN apt update && \
     apt install -y php8.2-fpm \
