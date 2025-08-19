@@ -1,21 +1,104 @@
-name: incpetion
+name: inception
 
 services:
   nginx:
-    build: nginx
+    build:
+      context: requirements/nginx
+    expose:
+      - "443"
+    ports:
+      - "443:443"
+    restart: on-failure
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      wordpress:
+        condition: service_healthy
     configs:
-    secrets:
+      - source: nginx_config
+        target: /etc/nginx/nginx.conf
     volumes:
+      - type: bind
+        source: /home/alafdili/data/Wordpress
+        target: /mnt/wordpress
     networks:
+      - inception
+
   wordpress:
-    build: wordpress
+    build:
+      context: requirements/wordpress
+    expose:
+      - "9000"
+    restart: on-failure
+    env_file:
+      - path: .env
+    environment:
+      - CREDENTIALS_FILE=/run/secrets/wp_credentials
+      - DB_PASSWD_FILE=/run/secrets/db_password
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/bin/bash", "-c", "ps aux | grep 'php-fpm: master process'"]
+      interval: 10s
+      retries: 2
     configs:
-    secrets:
+      - source: php_fpm_config
+        target: /etc/php/8.2/fpm/pool.d/wordpress.conf
     volumes:
+      - type: bind
+        source: /home/alafdili/data/Wordpress
+        target: /mnt/wordpress
+    secrets:
+      - db_password
+      - wp_credentials
     networks:
+      - inception
+
   mariadb:
-    build: mariadb
+    build:
+      context: requirements/mariadb
+    expose:
+      - "3306"
+    restart: on-failure
+    env_file:
+      - path: .env
+    environment:
+      - DB_PASSWD_FILE=/run/secrets/db_password
+      - DB_ROOT_PASSWD_FILE=/run/secrets/db_root_password
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "-u=root", "ping"]
+      interval: 10s
+      retries: 2
     configs:
-    secrets:
+      - source: mariadbd_config
+        target: /etc/mysql/mariadb.conf.d/myconfig.cnf
     volumes:
+      - type: bind
+        source: /home/alafdili/data/DB
+        target: /mnt/db
+    secrets:
+      - db_password
+      - db_root_password
     networks:
+      - inception
+
+configs:
+  nginx_config:
+    file: requirements/nginx/conf/nginx.conf
+  php_fpm_config:
+    file: requirements/wordpress/conf/wordpress.conf
+  mariadbd_config:
+    file: requirements/mariadb/conf/myconfig.cnf
+
+secrets:
+  db_password:
+    file: /home/alafdili/inception/secrets/db_password.txt
+  db_root_password:
+    file: /home/alafdili/inception/secrets/db_root_password.txt
+  wp_credentials:
+    file: /home/alafdili/inception/secrets/credentials.txt
+
+networks:
+  inception:
+    driver: bridge

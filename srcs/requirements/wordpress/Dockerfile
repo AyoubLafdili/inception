@@ -17,7 +17,6 @@ WORKDIR /etc/php/8.2/fpm/pool.d/
 
 RUN rm *
 
-COPY conf/* .
 COPY tools/* /usr/local/bin/
 
 USER www-data

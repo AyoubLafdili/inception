@@ -2,6 +2,8 @@
 port            = 3306
 
 [server]
-pid-file        = /run/mariadbd.pid
+user            = mysql
 bind-address    = 0.0.0.0
-datadir        = /mnt/db/
+datadir         = /mnt/db/
+pid-file        = /run/mariadbd.pid
+init_file       = /run/startupQueries.sql

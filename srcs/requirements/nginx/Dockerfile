@@ -10,6 +10,4 @@ RUN apt update && \
 
 EXPOSE 443
 
-COPY conf/* /etc/nginx/
-
 ENTRYPOINT ["nginx"]

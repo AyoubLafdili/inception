@@ -1,10 +1,8 @@
 FROM debian:12
 
 RUN apt update && \
-	apt install -y mariadb-server \
-	mariadb-client
+	apt install -y mariadb-server
 
-COPY conf/* /etc/mysql/mariadb.conf.d/
 COPY tools/* /usr/local/bin/
 
 RUN mkdir /run/mysqld/ && \ 
