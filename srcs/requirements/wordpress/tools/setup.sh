@@ -2,6 +2,8 @@
 
 ADMIN_NAME=$(cat $CREDENTIALS_FILE | grep WP_ADMIN_NAME | awk '{print $3}')
 ADMIN_PASSWD=$(cat $CREDENTIALS_FILE | grep WP_ADMIN_PASSWD | awk '{print $3}')
+USER_NAME=$(cat $CREDENTIALS_FILE | grep WP_USER_NAME | awk '{print $3}')
+USER_PASS=$(cat $CREDENTIALS_FILE | grep WP_USER_PASSWD | awk '{print $3}')
 
 wp core download    --path=/mnt/wordpress/
 
@@ -20,5 +22,11 @@ wp core install --path=/mnt/wordpress \
                 --admin_password=$ADMIN_PASSWD \
                 --admin_email=$ADMIN_EMAIL \
                 --skip-email
+
+wp user create  $USER_NAME \
+                ayoublafdili@gmail.com \
+                --path=/mnt/wordpress \
+                --user_pass=$USER_PASS \
+                --role=author
 
 exec php-fpm8.2 --nodaemonize
