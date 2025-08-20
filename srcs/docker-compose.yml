@@ -14,6 +14,8 @@ services:
         condition: service_healthy
       wordpress:
         condition: service_healthy
+      adminer:
+        condition: service_started
     configs:
       - source: nginx_config
         target: /etc/nginx/nginx.conf
@@ -74,6 +76,23 @@ services:
     secrets:
       - db_password
       - db_root_password
+    networks:
+      - inception
+
+  adminer:
+    build:
+      context: requirements/bonus/adminer
+    volumes:
+      - wordpress_files:/mnt/wordpress
+
+  mailhog:
+    build:
+      context: requirements/bonus/mailhog
+    expose:
+      - "8025"
+      - "1025"
+    ports:
+      - "6123:8025"
     networks:
       - inception
 
