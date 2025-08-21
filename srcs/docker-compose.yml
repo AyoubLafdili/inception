@@ -38,13 +38,15 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
+      redis:
+        condition: service_started
     healthcheck:
       test: ["CMD", "/bin/bash", "-c", "ps aux | grep 'php-fpm: master process'"]
       interval: 10s
       retries: 2
     configs:
       - source: php_fpm_config
-        target: /etc/php/8.2/fpm/pool.d/wordpress.conf
+        target: /etc/php/7.4/fpm/pool.d/wordpress.conf
     volumes:
       - wordpress_files:/mnt/wordpress
     secrets:
@@ -96,6 +98,12 @@ services:
     networks:
       - inception
 
+  redis:
+    build:
+      context: requirements/bonus/redis
+    networks:
+      - inception
+
 configs:
   nginx_config:
     file: requirements/nginx/conf/nginx.conf
@@ -124,7 +132,7 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: /home/alafdili/data/Wordpress
+      device: /home/alafdili/data/DB
 
 networks:
   inception:

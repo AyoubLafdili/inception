@@ -29,4 +29,11 @@ wp user create  $USER_NAME \
                 --user_pass=$USER_PASS \
                 --role=author
 
-exec php-fpm8.2 --nodaemonize
+wp config set   --path=/mnt/wordpress \
+                WP_REDIS_HOST inception-redis-1
+
+
+wp config set   --path=/mnt/wordpress \
+                WP_REDIS_PORT 6379
+
+exec php-fpm7.4 --nodaemonize
