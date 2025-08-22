@@ -14,8 +14,6 @@ services:
         condition: service_healthy
       wordpress:
         condition: service_healthy
-      adminer:
-        condition: service_started
     configs:
       - source: nginx_config
         target: /etc/nginx/nginx.conf
@@ -84,8 +82,13 @@ services:
   adminer:
     build:
       context: requirements/bonus/adminer
-    volumes:
-      - wordpress_files:/mnt/wordpress
+    ports:
+      - "8080:8080"
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    networks:
+      - inception
 
   mailhog:
     build:
