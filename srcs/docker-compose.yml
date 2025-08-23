@@ -119,6 +119,17 @@ services:
     networks:
       - inception
 
+  static:
+    build:
+      context: requirements/bonus/staticSite
+    expose:
+      - "80"
+    ports:
+      - "8080:80"
+    configs:
+      - source: bonus_nginx_config
+        target: /etc/nginx/nginx.conf
+
 configs:
   nginx_config:
     file: requirements/nginx/conf/nginx.conf
@@ -126,6 +137,8 @@ configs:
     file: requirements/wordpress/conf/wordpress.conf
   mariadbd_config:
     file: requirements/mariadb/conf/myconfig.cnf
+  bonus_nginx_config:
+    file: requirements/bonus/staticSite/conf/nginx.conf
 
 secrets:
   db_password:
