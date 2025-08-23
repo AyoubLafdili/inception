@@ -100,6 +100,18 @@ services:
       - "6123:8025"
     networks:
       - inception
+  
+  ftp:
+    build:
+      context: requirements/bonus/ftp
+    restart: always
+    expose:
+      - "21"
+    ports:
+      - "21:21"
+      - "30000-30010:30000-30010"
+    volumes:
+      - wordpress_files:/mnt/wordpress
 
   redis:
     build:
