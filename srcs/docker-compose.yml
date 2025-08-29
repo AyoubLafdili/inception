@@ -87,7 +87,7 @@ services:
       context: requirements/bonus/adminer
     ports:
       - "8080:8080"
-    restart: on_failure
+    restart: on-failure
     container_name: adminer
     depends_on:
       mariadb:
@@ -98,7 +98,7 @@ services:
   mailhog:
     build:
       context: requirements/bonus/mailhog
-    restart: on_failure
+    restart: on-failure
     container_name: mailhog
     expose:
       - "8025"
@@ -111,7 +111,7 @@ services:
   ftp:
     build:
       context: requirements/bonus/ftp
-    restart: on_failure
+    restart: on-failure
     container_name: ftp
     expose:
       - "21"
@@ -124,7 +124,7 @@ services:
   redis:
     build:
       context: requirements/bonus/redis
-    restart: on_failure
+    restart: on-failure
     container_name: redis
     networks:
       - inception
@@ -132,7 +132,7 @@ services:
   static_site:
     build:
       context: requirements/bonus/quote
-    restart: on_failure
+    restart: on-failure
     container_name: static_site
     expose:
       - "80"
