@@ -8,7 +8,8 @@ services:
       - "443"
     ports:
       - "443:443"
-    restart: on-failure
+    restart: always
+    container_name: nginx
     depends_on:
       mariadb:
         condition: service_healthy
@@ -27,7 +28,8 @@ services:
       context: requirements/wordpress
     expose:
       - "9000"
-    restart: on-failure
+    restart: always
+    container_name: wordpress
     env_file:
       - path: .env
     environment:
@@ -58,7 +60,8 @@ services:
       context: requirements/mariadb
     expose:
       - "3306"
-    restart: on-failure
+    restart: always
+    container_name: mariadb
     env_file:
       - path: .env
     environment:
@@ -84,6 +87,8 @@ services:
       context: requirements/bonus/adminer
     ports:
       - "8080:8080"
+    restart: on_failure
+    container_name: adminer
     depends_on:
       mariadb:
         condition: service_healthy
@@ -93,6 +98,8 @@ services:
   mailhog:
     build:
       context: requirements/bonus/mailhog
+    restart: on_failure
+    container_name: mailhog
     expose:
       - "8025"
       - "1025"
@@ -104,7 +111,8 @@ services:
   ftp:
     build:
       context: requirements/bonus/ftp
-    restart: always
+    restart: on_failure
+    container_name: ftp
     expose:
       - "21"
     ports:
@@ -116,16 +124,20 @@ services:
   redis:
     build:
       context: requirements/bonus/redis
+    restart: on_failure
+    container_name: redis
     networks:
       - inception
 
-  static:
+  static_site:
     build:
-      context: requirements/bonus/staticSite
+      context: requirements/bonus/quote
+    restart: on_failure
+    container_name: static_site
     expose:
       - "80"
     ports:
-      - "8080:80"
+      - "8081:80"
     configs:
       - source: bonus_nginx_config
         target: /etc/nginx/nginx.conf
@@ -138,7 +150,7 @@ configs:
   mariadbd_config:
     file: requirements/mariadb/conf/myconfig.cnf
   bonus_nginx_config:
-    file: requirements/bonus/staticSite/conf/nginx.conf
+    file: requirements/bonus/quote/conf/nginx.conf
 
 secrets:
   db_password:
