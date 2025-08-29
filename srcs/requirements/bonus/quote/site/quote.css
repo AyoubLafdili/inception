@@ -1,0 +1,30 @@
+.quote {
+    text-align: center;
+    font-family: Georgia;
+    font-style: italic;
+    font-size: 20px;
+    max-width: 700px;
+    color: Beige;
+}
+
+.nonquote {
+    font-family: Georgia;
+    font-size: 15px;
+    color: Beige;
+}
+
+h1 {
+    text-align: center;
+    font-family:serif;
+    font-size: 50px;
+    color: lightgoldenrodyellow;
+}
+
+body
+{
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: url("https://images.pexels.com/photos/18541760/pexels-photo-18541760.jpeg");
+}
