@@ -30,7 +30,7 @@ wp user create  $USER_NAME \
                 --role=author
 
 wp config set   --path=/mnt/wordpress \
-                WP_REDIS_HOST inception-redis-1
+                WP_REDIS_HOST redis
 
 
 wp config set   --path=/mnt/wordpress \

@@ -4,6 +4,7 @@ services:
   nginx:
     build:
       context: requirements/nginx
+    image: nginx:inc
     expose:
       - "443"
     ports:
@@ -26,6 +27,7 @@ services:
   wordpress:
     build:
       context: requirements/wordpress
+    image: wordpress:inc
     expose:
       - "9000"
     restart: always
@@ -58,6 +60,7 @@ services:
   mariadb:
     build:
       context: requirements/mariadb
+    image: mariadb:inc
     expose:
       - "3306"
     restart: always
@@ -85,6 +88,7 @@ services:
   adminer:
     build:
       context: requirements/bonus/adminer
+    image: adminer:inc
     ports:
       - "8080:8080"
     restart: on-failure
@@ -98,19 +102,21 @@ services:
   mailhog:
     build:
       context: requirements/bonus/mailhog
+    image: mailhog:inc
     restart: on-failure
     container_name: mailhog
     expose:
       - "8025"
       - "1025"
     ports:
-      - "6123:8025"
+      - "8025:8025"
     networks:
       - inception
   
   ftp:
     build:
       context: requirements/bonus/ftp
+    image: ftp:inc
     restart: on-failure
     container_name: ftp
     expose:
@@ -124,6 +130,7 @@ services:
   redis:
     build:
       context: requirements/bonus/redis
+    image: redis:inc
     restart: on-failure
     container_name: redis
     networks:
@@ -132,6 +139,7 @@ services:
   static_site:
     build:
       context: requirements/bonus/quote
+    image: static_site:inc
     restart: on-failure
     container_name: static_site
     expose:
