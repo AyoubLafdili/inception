@@ -6,6 +6,6 @@ RUN apt update && \
 	touch /run/mariadbd.pid && \
 	chown -R mysql:mysql /run/mysqld /run/mariadbd.pid
 
-COPY tools/* /usr/local/bin/
+COPY --chmod=744 tools/* /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/setup.sh"]

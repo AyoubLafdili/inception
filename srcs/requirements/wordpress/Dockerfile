@@ -14,6 +14,6 @@ RUN apt update && \
 
 USER www-data
 
-COPY tools/* /usr/local/bin/
+COPY --chmod=744 tools/* /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/setup.sh"]

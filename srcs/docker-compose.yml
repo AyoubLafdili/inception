@@ -124,8 +124,12 @@ services:
     ports:
       - "21:21"
       - "30000-30010:30000-30010"
+    environment:
+      - FTP_CREDINTIALS_FILE=/run/secrets/ftp_credentials
     volumes:
       - wordpress_files:/mnt/wordpress
+    secrets:
+      - ftp_credentials
 
   redis:
     build:
@@ -167,6 +171,8 @@ secrets:
     file: /home/alafdili/inception/secrets/db_root_password.txt
   wp_credentials:
     file: /home/alafdili/inception/secrets/credentials.txt
+  ftp_credentials:
+    file: /home/alafdili/inception/secrets/ftp_credentials.txt
 
 volumes:
   wordpress_files:

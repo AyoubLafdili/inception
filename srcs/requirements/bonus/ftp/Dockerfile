@@ -3,11 +3,10 @@ FROM  debian:bullseye
 RUN apt update && \
     apt install -y vsftpd 
 
-RUN useradd ftpuser && \
-    usermod -d /mnt/wordpress/ -G www-data ftpuser && \
-    echo "ftpuser:test" | chpasswd && \
-    mkdir /var/run/empty/
+RUN mkdir /var/run/empty/
+
+COPY --chmod=744 tools/* /usr/local/bin/
 
 COPY conf/* /etc/
 
-ENTRYPOINT ["vsftpd"]
+ENTRYPOINT ["/usr/local/bin/startup.sh"]

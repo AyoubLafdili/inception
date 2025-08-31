@@ -2,10 +2,10 @@ FROM debian:bullseye
 
 RUN apt update && \
     apt install -y \
-    curl \
-    php \ 
-    php-mysql && \
-    curl -Lo /usr/local/bin/adminer.php https://www.adminer.org/latest.php
+    php-mysql \
+    php
+
+ADD https://www.adminer.org/latest.php /usr/local/bin/adminer.php
 
 EXPOSE 8080
 
