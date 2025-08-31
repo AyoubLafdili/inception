@@ -1,12 +1,12 @@
 FROM  debian:bullseye
 
-RUN apt update && \
+RUN << EOF
+    apt update && \
     apt install -y vsftpd 
-
-RUN mkdir /var/run/empty/
-
-COPY --chmod=744 tools/* /usr/local/bin/
+    mkdir /var/run/empty/
+EOF
 
 COPY conf/* /etc/
+COPY --chmod=744 tools/* /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/startup.sh"]

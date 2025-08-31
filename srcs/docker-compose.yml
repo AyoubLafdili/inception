@@ -12,8 +12,6 @@ services:
     restart: always
     container_name: nginx
     depends_on:
-      mariadb:
-        condition: service_healthy
       wordpress:
         condition: service_healthy
     configs:
@@ -32,11 +30,13 @@ services:
       - "9000"
     restart: always
     container_name: wordpress
-    env_file:
-      - path: .env
     environment:
-      - CREDENTIALS_FILE=/run/secrets/wp_credentials
-      - DB_PASSWD_FILE=/run/secrets/db_password
+      DB_HOST: $DB_HOST
+      DOMAIN_NAME: $DOMAIN_NAME
+      ADMIN_EMAIL: $ADMIN_EMAIL
+      WEBSITE_TITLE: $WEBSITE_TITLE
+      DB_PASSWD_FILE: $DB_PASSWD_FILE
+      CREDENTIALS_FILE: $CREDENTIALS_FILE
     depends_on:
       mariadb:
         condition: service_healthy
@@ -65,11 +65,11 @@ services:
       - "3306"
     restart: always
     container_name: mariadb
-    env_file:
-      - path: .env
     environment:
-      - DB_PASSWD_FILE=/run/secrets/db_password
-      - DB_ROOT_PASSWD_FILE=/run/secrets/db_root_password
+      DB_NAME: $DB_NAME
+      MYSQL_USER: $MYSQL_USER
+      DB_PASSWD_FILE: $DB_PASSWD_FILE
+      DB_ROOT_PASSWD_FILE: $DB_ROOT_PASSWD_FILE
     healthcheck:
       test: ["CMD", "mariadb-admin", "-u=root", "ping"]
       interval: 10s
@@ -93,9 +93,6 @@ services:
       - "8080:8080"
     restart: on-failure
     container_name: adminer
-    depends_on:
-      mariadb:
-        condition: service_healthy
     networks:
       - inception
 
@@ -107,7 +104,6 @@ services:
     container_name: mailhog
     expose:
       - "8025"
-      - "1025"
     ports:
       - "8025:8025"
     networks:
@@ -125,7 +121,8 @@ services:
       - "21:21"
       - "30000-30010:30000-30010"
     environment:
-      - FTP_CREDINTIALS_FILE=/run/secrets/ftp_credentials
+      FTP_USER: $FTP_USER
+      FTP_CREDINTIALS_FILE: $FTP_CREDINTIALS_FILE
     volumes:
       - wordpress_files:/mnt/wordpress
     secrets:

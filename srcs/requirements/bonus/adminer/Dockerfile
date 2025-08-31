@@ -1,9 +1,11 @@
 FROM debian:bullseye
 
-RUN apt update && \
+RUN << EOF
+    apt update
     apt install -y \
     php-mysql \
     php
+EOF
 
 ADD https://www.adminer.org/latest.php /usr/local/bin/adminer.php
 
